@@ -1,0 +1,4 @@
+redis:
+  host: "localhost:6379"
+  password: "mantis"
+  cache_ttl: "10m"

@@ -15,7 +15,7 @@ Follow these steps to get started with the Asynq Queue Process Example:
 
 1. **Clone the Repository**: Clone this repository to your local machine.
 
-2. **Install Dependencies**: Navigate to the root directory of the project and run the following command to install the required dependencies:
+2. **Install Dependencies and Fill Config**: Navigate to the root directory of the project and run the following command to install the required dependencies and dont forget fill the **config.yml** file:
 
 ```shell
 go mod tidy

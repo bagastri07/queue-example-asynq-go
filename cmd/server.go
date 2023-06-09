@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"context"
-
-	"github.com/bagastri07/queue-example-asynq-go/internal/server"
+	"github.com/bagastri07/queue-example-asynq-go/internal/config"
+	"github.com/bagastri07/queue-example-asynq-go/internal/handler"
+	"github.com/bagastri07/queue-example-asynq-go/internal/service"
 	"github.com/hibiken/asynq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -11,25 +11,24 @@ import (
 
 func runServer(cmd *cobra.Command, args []string) {
 	server := asynq.NewServer(
-		asynq.RedisClientOpt{Addr: "localhost:6379", Password: "mantis"},
+		asynq.RedisClientOpt{Addr: config.RedisHost(), Password: config.RedisPassword()},
 		asynq.Config{
 			Concurrency: 10,
 			Queues:      map[string]int{"default": 1},
 		},
 	)
 
+	emailSvc := service.NewEmailService()
+
+	handler := handler.NewHandler(emailSvc)
+
 	mux := asynq.NewServeMux()
-	mux.HandleFunc("send_email", serverHandler)
+	mux.HandleFunc("send-email", handler.SendEmailHandler)
 
 	if err := server.Run(mux); err != nil {
 		logrus.Error("Server error:", err)
 	}
 }
-
-func serverHandler(ctx context.Context, task *asynq.Task) error {
-	return server.SendEmailHandler(ctx, task)
-}
-
 func init() {
 	serverCmd := &cobra.Command{
 		Use:   "server",
