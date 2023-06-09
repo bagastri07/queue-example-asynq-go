@@ -26,3 +26,9 @@ func (h *Handler) SendEmailHandler(ctx context.Context, t *asynq.Task) error {
 	}
 	return nil
 }
+
+func (h *Handler) CronSalutationHandler(ctx context.Context, t *asynq.Task) error {
+	logrus.Info("Executing cron task:", string(t.Payload()))
+	// Add your cron task logic here
+	return nil
+}
