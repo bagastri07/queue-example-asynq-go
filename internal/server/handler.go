@@ -10,7 +10,7 @@ import (
 
 func SendEmailHandler(ctx context.Context, t *asynq.Task) error {
 	// Simulate sending an email
-	time.Sleep(2 * time.Second)
+	time.Sleep(3 * time.Second)
 	logrus.Info("Email sent:", string(t.Payload()))
 	return nil
 }
